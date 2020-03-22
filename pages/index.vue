@@ -77,4 +77,5 @@ export default {
     return { posts }
   }
 }
+
 </script>

@@ -1,102 +1,246 @@
 <template>
-  <v-container fluid>
-    <v-row
-      justify="center"
+  <v-app>
+    <v-img
+      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49442049_2136301306456649_298560287894667264_o.jpg?_nc_cat=110&_nc_oc=AQm6SjyaXB34cG_zdLx5Rjuk7CQAXyr58Z3aMAGzJl1DIXZB1Of2MDH4kvU0-XyVTEKNOFVRFe6z2rOIb-vMisPO&_nc_ht=scontent-nrt1-1.xx&oh=b49d0781ed640818ae9d70e2c4e43499&oe=5EBAF5BD"
+      max-height="250"
+      to="/"
     >
-      <v-col
-        cols="12"
-        sm="11"
-        md="10"
-        xl="8"
-      >
-        <v-row v-if="posts.length">
-          <v-col
-            v-for="(post, i) in posts"
-            :key="i"
-            cols="12"
-            sm="6"
-            lg="4"
-            xl="3"
-          >
-            <v-card
-              max-width="400"
-              class="mx-auto"
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+        height="80"
+        width="80"
+        elevation="6"
+        class="mt-5 ml-5"
+      />
+    </v-img>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      width="350"
+      bottom
+      temporary
+    >
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header>カテゴリ一覧</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <div
+              v-if="posts.length"
             >
-              <v-img
-                :src="post.fields.image.fields.file.url"
-                :alt="post.fields.image.fields.title"
-                :aspect-ratio="16/9"
-                max-height="200"
-                class="white--text"
+              <v-btn
+                v-for="(post, i) in posts"
+                :key="i"
+                :to="linkTo('categories',post.fields.category)"
+                width="300"
+                class="mx-auto my-2"
               >
-                <v-card-text>
-                  <v-chip
-                    small
-                    dark
-                    :color="categoryColor(post.fields.category)"
-                    to="#"
-                    class="font-weight-bold"
+                {{ post.fields.category.fields.name }}
+              </v-btn>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>カテゴリ一覧</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-btn href="categories/others" width="300" class="mx-auto my-2">
+              その他
+            </v-btn>
+            <v-btn href="categories/study" width="300" class="mx-auto my-2">
+              講座・勉強会
+            </v-btn>
+            <v-btn href="categories/making" width="300" class="mx-auto my-2">
+              作品制作・プロジェクト
+            </v-btn>
+            <v-btn href="categories/q" width="300" class="mx-auto my-2">
+              質問・アンケート
+            </v-btn>
+            <v-btn href="categories/notice" width="300" class="mx-auto my-2">
+              お知らせ
+            </v-btn>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-navigation-drawer>
+    <v-container fluid>
+      <v-row
+        justify="center"
+      >
+        <v-col
+          cols="12"
+          sm="11"
+          md="10"
+          xl="8"
+        >
+          <v-row v-if="posts.length">
+            <v-col
+              v-for="(post, i) in posts"
+              :key="i"
+              cols="12"
+              sm="6"
+              lg="4"
+              xl="3"
+            >
+              <v-card
+                max-width="500"
+                class="mx-auto"
+              >
+                <v-img
+                  :src="post.fields.image.fields.file.url"
+                  :alt="post.fields.image.fields.title"
+                  :aspect-ratio="16/9"
+                  max-height="200"
+                >
+                  <v-card-text>
+                    <v-chip
+                      :color="categoryColor(post.fields.category)"
+                      :to="linkTo('categories',post.fields.category)"
+                      small
+                      dark
+                      class="font-weight-bold"
+                    >
+                      {{ post.fields.category.fields.name }}
+                    </v-chip>
+                  </v-card-text>
+                </v-img>
+                <v-row>
+                  <v-btn
+                    @click.stop="onClickBtn(post)"
+                    color="accent"
+                    text
+                    class="ml-6 my-1"
                   >
-                    {{ post.fields.category.fields.name }}
-                  </v-chip>
+                    ABOUT
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn
+                    :href="post.fields.url"
+                    color="accent"
+                    text
+                    class="mr-6 my-1"
+                  >
+                    Jump
+                  </v-btn>
+                </v-row>
+              </v-card>
+            </v-col>
+            <v-dialog
+              v-model="dialog"
+              v-if="currentBook"
+              max-width="700"
+              activator
+            >
+              <v-card>
+                <v-img
+                  :src="currentBook.fields.image.fields.file.url"
+                  :alt="currentBook.fields.image.fields.title"
+                  :aspect-ratio="16/9"
+                >
+                  <v-card-text>
+                    <v-chip
+                      :color="categoryColor(currentBook.fields.category)"
+                      :to="linkTo('categories',currentBook.fields.category)"
+                      small
+                      dark
+                      class="font-weight-bold"
+                    >
+                      {{ currentBook.fields.category.fields.name }}
+                    </v-chip>
+                  </v-card-text>
+                </v-img>
+                <v-col>
+                  <template v-if="currentBook.fields.tags">
+                    <v-chip
+                      v-for="(tag) in currentBook.fields.tags"
+                      :key="tag.sys.id"
+                      :to="linkTo('tags', tag)"
+                      small
+                      outlined
+                      label
+                      class="ml-3 my-3"
+                    >
+                      <v-icon
+                        left
+                        size="18"
+                        color="grey"
+                      >
+                        mdi-label
+                      </v-icon>
+                      {{ tag.fields.name }}
+                    </v-chip>
+                  </template>
+                </v-col>
+                <v-card-text>
+                  {{ currentBook.fields.body }}
                 </v-card-text>
-              </v-img>
-              <v-card-title>
-                <nuxt-link
-                  :to="linkTo('posts', post)"
-                >
-                  {{ post.fields.title }}
-                </nuxt-link>
-              </v-card-title>
-              <v-card-text>
-                {{ post.fields.publishDate }}
-              </v-card-text>
-
-              <v-list-item three-line style="min-height: unset;">
-                <v-list-item-subtitle>
-                  {{ post.fields.body }}
-                </v-list-item-subtitle>
-              </v-list-item>
-
-              <v-card-actions>
-                <v-spacer />
-                <v-btn
-                  text
-                  color="primary"
-                >
-                  この記事をみる
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-        <div v-else class="text-center">
-          投稿された記事はありません。
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+                <v-card-actions>
+                  <v-btn
+                    :href="currentBook.fields.url"
+                    text
+                    color="primary"
+                    class="mr-3"
+                  >
+                    JUMP
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn
+                    @click="dialog = false"
+                    color="green darken-1"
+                    text
+                    class="mr-3"
+                  >
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+          <div v-else class="text-center">
+            投稿された記事はありません。
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
 export default {
-
+  data () {
+    return {
+      dialog: false,
+      drawer: false,
+      currentBook: null,
+      group: null
+    }
+  },
   computed: {
     ...mapState(['posts']),
     ...mapGetters(['setEyeCatch', 'draftChip', 'linkTo']),
     categoryColor () {
       return (category) => {
         switch (category.fields.name) {
-          case 'RubyOnRails': return '#C73A31'
-          case 'Nuxt.js': return '#236244'
-          case 'コラム': return 'primary'
-          default: return 'grey darken-3'
+          case 'イベント・ミーティング': return '#C73A31'
+          case '自己紹介・雑談等': return '#236244'
+          case 'お知らせ': return 'primary'
+          case '作品制作・プロジェクト': return '#0e2b3c'
+          case '講座・勉強会': return '#aa00aa'
+          case '質問・アンケート': return '#aaaa00'
+          default: return '#777'
         }
       }
     }
+  },
+  watch: {
+    group () {
+      this.drawer = false
+    }
+  },
+  methods: {
+    onClickBtn (post) {
+      this.currentBook = post
+      this.dialog = true
+    }
   }
-
 }
-
 </script>

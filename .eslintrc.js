@@ -9,5 +9,8 @@ module.exports = {
   },
   extends: ["@nuxtjs", "plugin:nuxt/recommended"],
   // add your custom rules here
-  rules: {}
+  rules: {
+    "no-console": "off", // console.log "error", "warn", "off"
+    "no-trailing-spaces": "off" // 行の末尾の空白
+  }
 };

@@ -1,19 +1,19 @@
 <template>
   <div>
     <v-img
-      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49442049_2136301306456649_298560287894667264_o.jpg?_nc_cat=110&_nc_oc=AQm6SjyaXB34cG_zdLx5Rjuk7CQAXyr58Z3aMAGzJl1DIXZB1Of2MDH4kvU0-XyVTEKNOFVRFe6z2rOIb-vMisPO&_nc_ht=scontent-nrt1-1.xx&oh=b49d0781ed640818ae9d70e2c4e43499&oe=5EBAF5BD"
+      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49025949_2136308929789220_1693793277427318784_o.jpg?_nc_cat=102&_nc_sid=825194&_nc_oc=AQmAYc7FzWlxZW2cUj1K0hXkSu24hizDOObaB3P_vg9KwJydxLo8Nr9RrUO-5vIdXO8Uv8n9U2GbEBrpANudVNjk&_nc_ht=scontent-nrt1-1.xx&oh=e2d44fb46ecc1800d99aa4f680886b2d&oe=5E9FD6D2"
       max-height="250"
       to="/"
     >
-      <v-app-bar-nav-icon
+      <!-- <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
         height="80"
         width="80"
         elevation="6"
         class="mt-5 ml-5"
-      />
+      /> -->
     </v-img>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       absolute
       width="350"
@@ -98,7 +98,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <h1></h1>
     <v-row
       justify="center"
@@ -109,6 +109,8 @@
       md="10"
       xl="8"
     >
+    <breadcrumbs />
+    <h1 class="font-weight-thin text--disabled">{{ category.fields.name }}</h1>
       <v-row v-if="relatedPosts.length">
         <v-col
           v-for="(post, i) in relatedPosts"

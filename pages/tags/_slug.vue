@@ -1,19 +1,19 @@
 <template>
   <div>
     <v-img
-      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49442049_2136301306456649_298560287894667264_o.jpg?_nc_cat=110&_nc_oc=AQm6SjyaXB34cG_zdLx5Rjuk7CQAXyr58Z3aMAGzJl1DIXZB1Of2MDH4kvU0-XyVTEKNOFVRFe6z2rOIb-vMisPO&_nc_ht=scontent-nrt1-1.xx&oh=b49d0781ed640818ae9d70e2c4e43499&oe=5EBAF5BD"
+      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49025949_2136308929789220_1693793277427318784_o.jpg?_nc_cat=102&_nc_sid=825194&_nc_oc=AQmAYc7FzWlxZW2cUj1K0hXkSu24hizDOObaB3P_vg9KwJydxLo8Nr9RrUO-5vIdXO8Uv8n9U2GbEBrpANudVNjk&_nc_ht=scontent-nrt1-1.xx&oh=e2d44fb46ecc1800d99aa4f680886b2d&oe=5E9FD6D2"
       max-height="250"
       to="/"
     >
-      <v-app-bar-nav-icon
+      <!-- <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
         height="80"
         width="80"
         elevation="6"
         class="mt-5 ml-5"
-      />
+      /> -->
     </v-img>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       absolute
       width="350"
@@ -98,7 +98,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-row
       justify="center"
     >
@@ -108,6 +108,8 @@
       md="10"
       xl="8"
     >
+    <breadcrumbs />
+    <h1 class="font-weight-thin text--disabled">{{ tag.fields.name }}</h1>
     <v-row v-if="relatedPosts.length">
       <v-col
         v-for="(post, i) in relatedPosts"
@@ -130,6 +132,7 @@
           <v-card-text>
             <v-chip
               :color="categoryColor(post.fields.category)"
+              :to="linkTo('categories',post.fields.category)"
               small
               dark
               class="font-weight-bold"
@@ -159,13 +162,76 @@
           </v-row>
         </v-card>
       </v-col>
+      <v-dialog
+        v-model="dialog"
+        v-if="currentBook"
+        max-width="700"
+        activator
+      >
+        <v-card>
+          <v-img
+            :src="currentBook.fields.image.fields.file.url"
+            :alt="currentBook.fields.image.fields.title"
+            :aspect-ratio="16/9"
+          >
+          </v-img>
+          <v-col>
+            <template v-if="currentBook.fields.tags">
+              <v-chip
+                v-for="(tag) in currentBook.fields.tags"
+                :key="tag.sys.id"
+                :to="linkTo('tags', tag)"
+                small
+                outlined
+                label
+                class="ml-3 my-3"
+              >
+                <v-icon
+                  left
+                  size="18"
+                  color="grey"
+                >
+                  mdi-label
+                </v-icon>
+                {{ tag.fields.name }}
+              </v-chip>
+            </template>
+          </v-col>
+          <v-card-text>
+            {{ currentBook.fields.body }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              :href="currentBook.fields.url"
+              text
+              color="primary"
+              class="mr-3"
+            >
+              JUMP
+            </v-btn>
+            <v-spacer />
+            <v-btn
+              @click="dialog = false"
+              color="green darken-1"
+              text
+              class="mr-3"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
+    <div v-else class="text-center">
+      投稿された記事はありません。
+    </div>
   </v-col>
 </v-row>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import client from '~/plugins/contentful'
 export default {
   async asyncData ({ payload, params, error, store, env }) {
@@ -189,10 +255,15 @@ export default {
   },
   data () {
     return {
-      drawer: false
+      dialog: false,
+      drawer: false,
+      currentBook: null,
+      group: null
     }
   },
   computed: {
+    ...mapState(['posts']),
+    ...mapGetters(['setEyeCatch', 'draftChip', 'linkTo']),
     categoryColor () {
       return (category) => {
         switch (category.fields.name) {
@@ -210,6 +281,12 @@ export default {
   watch: {
     group () {
       this.drawer = false
+    }
+  },
+  methods: {
+    onClickBtn (post) {
+      this.currentBook = post
+      this.dialog = true
     }
   }
 }

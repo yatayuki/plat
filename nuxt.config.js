@@ -33,7 +33,9 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    'plugins/contentful'	// 追記
+    'plugins/contentful',	// 追記
+    'plugins/components',
+    'plugins/vuetify'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -95,6 +97,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    transpile: ['vuetify/lib'],
     extend (config, ctx) {}
   }
 }

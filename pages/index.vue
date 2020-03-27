@@ -72,7 +72,7 @@
           xl="8"
         >
         <breadcrumbs />
-
+        <scroll />
           <v-row v-if="posts.length">
             <v-col
               v-for="(post, i) in posts"
@@ -228,7 +228,7 @@ export default {
           case '作品制作・プロジェクト': return '#0e2b3c'
           case '講座・勉強会': return '#aa00aa'
           case '質問・アンケート': return '#aaaa00'
-          default: return '#777'
+          default: return '#333'
         }
       }
     }

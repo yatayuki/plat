@@ -254,9 +254,9 @@ export default {
     categoryColor () {
       return (category) => {
         switch (category.fields.name) {
-          case 'イベント・ミーティング': return '#C73A31'
-          case '自己紹介・雑談等': return '#236244'
-          case 'お知らせ': return 'primary'
+          case '企画・プロジェクト': return '#C73A31'
+          case '雑談': return '#236244'
+          case 'パーティー・イベント': return 'primary'
           case '作品制作・プロジェクト': return '#0e2b3c'
           case '講座・勉強会': return '#aa00aa'
           case '質問・アンケート': return '#aaaa00'

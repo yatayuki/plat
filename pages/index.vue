@@ -73,6 +73,64 @@
         >
         <breadcrumbs />
         <scroll />
+        <v-row cols="12" sm="11" md="10" lg="7" class="mr-auto ml-auto">
+        <div class="mb-3">
+          <h2 class="text-center">おすすめスレッド</h2>
+        </div>
+        <v-carousel
+            cycle
+            hide-delimiters
+            hide-delimiter-background
+            light
+            show-arrows-on-hover
+          >
+            <v-carousel-item
+              v-for="(post, i) in posts"
+              :key="i"
+            >
+            <v-card>
+              <v-img
+                :src="post.fields.image.fields.file.url"
+                :alt="post.fields.image.fields.title"
+                :aspect-ratio="16/9"
+                max-height="300"
+              >
+                <v-card-text>
+                  <v-chip
+                    :color="categoryColor(post.fields.category)"
+                    :to="linkTo('categories',post.fields.category)"
+                    small
+                    dark
+                    class="font-weight-bold"
+                  >
+                    {{ post.fields.category.fields.name }}
+                  </v-chip>
+                </v-card-text>
+              </v-img>
+              <v-row color="white" white>
+                <v-btn
+                  @click.stop="onClickBtn(post)"
+                  color="accent"
+                  text
+                  dark
+                  class="ml-6 my-1"
+                >
+                  ABOUT
+                </v-btn>
+                <v-spacer />
+                <v-btn
+                  :href="post.fields.url"
+                  color="accent"
+                  text
+                  class="mr-6 my-1"
+                >
+                  Jump
+                </v-btn>
+              </v-row>
+            </v-card>
+            </v-carousel-item>
+          </v-carousel>
+        </v-row>
           <v-row v-if="posts.length">
             <v-col
               v-for="(post, i) in posts"

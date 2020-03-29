@@ -73,7 +73,7 @@
         >
         <breadcrumbs />
         <scroll />
-        <v-row cols="12" sm="11" md="10" lg="7" class="mr-auto ml-auto">
+        <!-- <v-row cols="12" sm="11" md="10" lg="7" class="mr-auto ml-auto">
         <div class="mb-3">
           <h2 class="text-center">おすすめスレッド</h2>
         </div>
@@ -130,7 +130,7 @@
             </v-card>
             </v-carousel-item>
           </v-carousel>
-        </v-row>
+        </v-row> -->
           <v-row v-if="posts.length">
             <v-col
               v-for="(post, i) in posts"

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-img
-      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/49025949_2136308929789220_1693793277427318784_o.jpg?_nc_cat=102&_nc_sid=825194&_nc_oc=AQmAYc7FzWlxZW2cUj1K0hXkSu24hizDOObaB3P_vg9KwJydxLo8Nr9RrUO-5vIdXO8Uv8n9U2GbEBrpANudVNjk&_nc_ht=scontent-nrt1-1.xx&oh=e2d44fb46ecc1800d99aa4f680886b2d&oe=5E9FD6D2"
+      src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/p960x960/91632620_1087874044913071_4611918376158101504_o.jpg?_nc_cat=103&_nc_sid=825194&_nc_oc=AQlgudUjHjh6EwRquFBfeEKQ6tQ66cEAOsw2dnNs0G7kfTGBlnZbYTKiYuprst4ik6WJp1k97UzUpXR-WRzkZ5qw&_nc_ht=scontent-nrt1-1.xx&_nc_tp=6&oh=01752da5dd5a434d980ce8cfbeb2423c&oe=5EB9B510"
       max-height="250"
       to="/"
     >
@@ -73,64 +73,6 @@
         >
         <breadcrumbs />
         <scroll />
-        <!-- <v-row cols="12" sm="11" md="10" lg="7" class="mr-auto ml-auto">
-        <div class="mb-3">
-          <h2 class="text-center">おすすめスレッド</h2>
-        </div>
-        <v-carousel
-            cycle
-            hide-delimiters
-            hide-delimiter-background
-            light
-            show-arrows-on-hover
-          >
-            <v-carousel-item
-              v-for="(post, i) in posts"
-              :key="i"
-            >
-            <v-card>
-              <v-img
-                :src="post.fields.image.fields.file.url"
-                :alt="post.fields.image.fields.title"
-                :aspect-ratio="16/9"
-                max-height="300"
-              >
-                <v-card-text>
-                  <v-chip
-                    :color="categoryColor(post.fields.category)"
-                    :to="linkTo('categories',post.fields.category)"
-                    small
-                    dark
-                    class="font-weight-bold"
-                  >
-                    {{ post.fields.category.fields.name }}
-                  </v-chip>
-                </v-card-text>
-              </v-img>
-              <v-row color="white" white>
-                <v-btn
-                  @click.stop="onClickBtn(post)"
-                  color="accent"
-                  text
-                  dark
-                  class="ml-6 my-1"
-                >
-                  ABOUT
-                </v-btn>
-                <v-spacer />
-                <v-btn
-                  :href="post.fields.url"
-                  color="accent"
-                  text
-                  class="mr-6 my-1"
-                >
-                  Jump
-                </v-btn>
-              </v-row>
-            </v-card>
-            </v-carousel-item>
-          </v-carousel>
-        </v-row> -->
           <v-row v-if="posts.length">
             <v-col
               v-for="(post, i) in posts"

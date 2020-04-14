@@ -3,7 +3,7 @@
     <v-img
       src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/p960x960/91632620_1087874044913071_4611918376158101504_o.jpg?_nc_cat=103&_nc_sid=825194&_nc_oc=AQlgudUjHjh6EwRquFBfeEKQ6tQ66cEAOsw2dnNs0G7kfTGBlnZbYTKiYuprst4ik6WJp1k97UzUpXR-WRzkZ5qw&_nc_ht=scontent-nrt1-1.xx&_nc_tp=6&oh=01752da5dd5a434d980ce8cfbeb2423c&oe=5EB9B510"
       max-height="300"
-      class="shadow-lg"
+      class="shadow-lg　rounded"
       to="/"
     >
       <!-- <v-app-bar-nav-icon
